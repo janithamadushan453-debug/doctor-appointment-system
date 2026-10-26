@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { Link } from "react-router-dom";
+import DoctorPhoto from "../components/DoctorPhoto";
 
 export default function Doctors() {
   const [search, setSearch] = useState("");
@@ -162,6 +163,11 @@ export default function Doctors() {
                   {doctor.specialization}
                 </span>
 
+                <DoctorPhoto
+                 src={doctor.photoUrl}
+                  name={doctor.name}
+                />
+
                 <h2>{doctor.name}</h2>
 
                 <p>
@@ -180,6 +186,18 @@ export default function Doctors() {
         >
            Book appointment
         </Link>
+
+        <p>Experience: {doctor.experienceYears ?? 0} years</p>
+
+        <p>
+        Languages: {doctor.languages || "Not specified"}
+         </p>
+
+        <p>
+        <Link to={`/doctors/${doctor._id}`}>
+         View full profile
+        </Link>
+        </p>
                 
               </article>
             ))}

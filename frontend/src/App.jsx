@@ -17,6 +17,8 @@ import MyAppointments from "./pages/MyAppointments";
 import AdminRoute from "./components/AdminRoute";
 import RescheduleAppointment from "./pages/RescheduleAppointment";
 import AdminAppointments from "./pages/AdminAppointments";
+import Profile from "./pages/Profile";
+import DoctorDetails from "./pages/DoctorDetails";
 
 export default function App() {
 const { token, user, logout } = useAuth();
@@ -33,7 +35,7 @@ const { token, user, logout } = useAuth();
   {token ? (
     <>
       <Link to="/dashboard">Dashboard</Link>
-
+      <Link to="/profile">My profile</Link>
       <Link to="/my-appointments">
         My appointments
       </Link>
@@ -138,6 +140,20 @@ const { token, user, logout } = useAuth();
       </AdminRoute>
     </ProtectedRoute>
   }
+/>
+
+<Route
+  path="/profile"
+  element={
+    <ProtectedRoute>
+      <Profile />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/doctors/:id"
+  element={<DoctorDetails />}
 />
         </Routes>
       </main>

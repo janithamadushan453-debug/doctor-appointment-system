@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link,useLocation, useNavigate } from "react-router-dom";
 
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext";
 export default function Login() {
   const navigate = useNavigate();
   const { saveSession } = useAuth();
+  const location = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,6 +40,11 @@ export default function Login() {
   return (
     <section className="card">
       <h1>Log in</h1>
+      {location.state?.message && (
+  <p className="success-message" role="status">
+    {location.state.message}
+  </p>
+)}
       <p>Access your appointment account.</p>
 
       <form onSubmit={handleSubmit}>

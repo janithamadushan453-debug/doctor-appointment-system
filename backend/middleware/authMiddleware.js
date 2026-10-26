@@ -40,13 +40,22 @@ exports.protect = async (req, res, next) => {
   }
 
   try {
-    const user = await User.findById(payload.sub);
-
+    const user = await User.findById(payload.sub)
+  .select("+tokenVersion");
     if (!user) {
       return res.status(401).json({
         message: "Account no longer exists"
       });
     }
+
+    if (
+  !Number.isInteger(payload.tokenVersion) ||
+  payload.tokenVersion !== (user.tokenVersion ?? 0)
+) {
+  return res.status(401).json({
+    message: "Your session has expired. Please log in again."
+  });
+}
 
     req.user = user;
     return next();

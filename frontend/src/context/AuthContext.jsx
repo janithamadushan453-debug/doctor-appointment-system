@@ -94,7 +94,8 @@ export function AuthProvider({ children }) {
         error,
         saveSession,
         logout,
-        retry
+        retry,
+        updateUser: setUser
       }}
     >
       {children}

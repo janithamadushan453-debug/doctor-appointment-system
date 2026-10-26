@@ -27,11 +27,20 @@ function validateBody(body, partial = false) {
     throw new Error("Send a valid JSON object");
   }
 
+  const textFields = {
+    name: 100,
+    specialization: 100,
+    qualifications: 500,
+    photoUrl: 2000,
+    languages: 200,
+    clinicLocation: 300,
+    bio: 2000
+  };
+
   const allowed = [
-    "name",
-    "specialization",
-    "qualifications",
+    ...Object.keys(textFields),
     "consultationFee",
+    "experienceYears",
     "isActive"
   ];
 
@@ -53,22 +62,46 @@ function validateBody(body, partial = false) {
 
   const data = {};
 
-  for (const field of ["name", "specialization", "qualifications"]) {
-    if (body[field] !== undefined) {
-      if (typeof body[field] !== "string") {
-        throw new Error(`${field} must be text`);
-      }
+  for (const [field, maxLength] of Object.entries(textFields)) {
+    if (body[field] === undefined) continue;
 
-      data[field] = body[field].trim();
+    if (typeof body[field] !== "string") {
+      throw new Error(`${field} must be text`);
+    }
 
-      const maximum = field === "qualifications" ? 500 : 100;
+    const value = body[field].trim();
 
-      if (
-        data[field].length > maximum ||
-        (field !== "qualifications" && data[field].length < 2)
-      ) {
-        throw new Error(`Enter a valid ${field}`);
-      }
+    if (value.length > maxLength) {
+      throw new Error(
+        `${field} must not exceed ${maxLength} characters`
+      );
+    }
+
+    if (
+      ["name", "specialization"].includes(field) &&
+      value.length < 2
+    ) {
+      throw new Error(`Enter a valid ${field}`);
+    }
+
+    data[field] = value;
+  }
+
+  if (data.photoUrl) {
+    let url;
+
+    try {
+      url = new URL(data.photoUrl);
+    } catch {
+      throw new Error("Enter a valid photo URL");
+    }
+
+    if (
+      !["https:", "http:"].includes(url.protocol) ||
+      url.username ||
+      url.password
+    ) {
+      throw new Error("Photo URL must use HTTP or HTTPS without credentials");
     }
   }
 
@@ -82,6 +115,18 @@ function validateBody(body, partial = false) {
     }
 
     data.consultationFee = body.consultationFee;
+  }
+
+  if (body.experienceYears !== undefined) {
+    if (
+      !Number.isInteger(body.experienceYears) ||
+      body.experienceYears < 0 ||
+      body.experienceYears > 80
+    ) {
+      throw new Error("Experience must be a whole number from 0 to 80");
+    }
+
+    data.experienceYears = body.experienceYears;
   }
 
   if (body.isActive !== undefined) {

@@ -441,3 +441,82 @@ summary {
     grid-template-columns: 1fr;
   }
 }
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.profile-panel {
+  min-width: 0;
+  padding: 26px;
+  background: white;
+  border: 1px solid #dbe3ec;
+  border-radius: 14px;
+  overflow-wrap: anywhere;
+}
+
+.profile-panel h2 {
+  margin-top: 0;
+}
+
+@media (max-width: 750px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.doctor-photo {
+  display: block;
+  width: 100%;
+  height: 220px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #dbeafe;
+}
+
+.photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1e40af;
+  font-size: 52px;
+  font-weight: bold;
+}
+
+.doctor-detail {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 32px;
+  padding: 30px;
+  background: white;
+  border: 1px solid #dbe3ec;
+  border-radius: 16px;
+  overflow-wrap: anywhere;
+}
+
+.doctor-detail h1 {
+  margin-top: 16px;
+}
+
+.doctor-detail .doctor-photo {
+  height: 280px;
+}
+
+.doctor-bio {
+  white-space: pre-wrap;
+}
+
+@media (max-width: 700px) {
+  .doctor-detail {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .doctor-detail .doctor-photo {
+    max-width: 320px;
+  }
+}

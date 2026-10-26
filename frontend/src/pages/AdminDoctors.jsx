@@ -7,7 +7,12 @@ const emptyForm = {
   specialization: "",
   qualifications: "",
   consultationFee: "",
-  isActive: true
+  isActive: true,
+  photoUrl: "",
+  experienceYears: "0",
+  languages: "",
+  clinicLocation: "",
+  bio: ""
 };
 
 export default function AdminDoctors() {
@@ -65,12 +70,17 @@ export default function AdminDoctors() {
   function editDoctor(doctor) {
     setEditingId(doctor._id);
     setForm({
-      name: doctor.name,
-      specialization: doctor.specialization,
-      qualifications: doctor.qualifications || "",
-      consultationFee: String(doctor.consultationFee),
-      isActive: doctor.isActive
-    });
+  name: doctor.name,
+  specialization: doctor.specialization,
+  qualifications: doctor.qualifications || "",
+  consultationFee: String(doctor.consultationFee),
+  isActive: doctor.isActive,
+  photoUrl: doctor.photoUrl || "",
+  experienceYears: String(doctor.experienceYears ?? 0),
+  languages: doctor.languages || "",
+  clinicLocation: doctor.clinicLocation || "",
+  bio: doctor.bio || ""
+});
 
     setError("");
     setMessage("");
@@ -102,9 +112,10 @@ export default function AdminDoctors() {
     event.preventDefault();
 
     const body = {
-      ...form,
-      consultationFee: Number(form.consultationFee)
-    };
+  ...form,
+  consultationFee: Number(form.consultationFee),
+  experienceYears: Number(form.experienceYears)
+};
 
     const saved = await perform(() =>
       editingId
@@ -223,6 +234,67 @@ export default function AdminDoctors() {
             />
             Active doctor
           </label>
+
+          <label htmlFor="admin-photo">Photo URL</label>
+<input
+  id="admin-photo"
+  type="url"
+  value={form.photoUrl}
+  onChange={(e) =>
+    setForm({ ...form, photoUrl: e.target.value })
+  }
+  placeholder="https://example.com/doctor-photo.jpg"
+  maxLength={2000}
+/>
+
+<label htmlFor="admin-experience">
+  Years of experience
+</label>
+<input
+  id="admin-experience"
+  type="number"
+  min="0"
+  max="80"
+  step="1"
+  value={form.experienceYears}
+  onChange={(e) =>
+    setForm({ ...form, experienceYears: e.target.value })
+  }
+  required
+/>
+
+<label htmlFor="admin-languages">Languages spoken</label>
+<input
+  id="admin-languages"
+  value={form.languages}
+  onChange={(e) =>
+    setForm({ ...form, languages: e.target.value })
+  }
+  placeholder="Sinhala, Tamil, English"
+  maxLength={200}
+/>
+
+<label htmlFor="admin-clinic">Clinic location</label>
+<input
+  id="admin-clinic"
+  value={form.clinicLocation}
+  onChange={(e) =>
+    setForm({ ...form, clinicLocation: e.target.value })
+  }
+  placeholder="Clinic name and address"
+  maxLength={300}
+/>
+
+<label htmlFor="admin-bio">About the doctor</label>
+<textarea
+  id="admin-bio"
+  value={form.bio}
+  onChange={(e) =>
+    setForm({ ...form, bio: e.target.value })
+  }
+  rows={5}
+  maxLength={2000}
+/>
 
           <div className="actions">
             <button type="submit">

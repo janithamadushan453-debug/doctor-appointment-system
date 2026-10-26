@@ -21,6 +21,32 @@ const doctorSchema = new mongoose.Schema(
       required: true,
       min: 0
     },
+    photoUrl: {
+  type: String,
+  default: "",
+  maxlength: 2000
+},
+experienceYears: {
+  type: Number,
+  default: 0,
+  min: 0,
+  max: 80
+},
+languages: {
+  type: String,
+  default: "",
+  maxlength: 200
+},
+clinicLocation: {
+  type: String,
+  default: "",
+  maxlength: 300
+},
+bio: {
+  type: String,
+  default: "",
+  maxlength: 2000
+},
     availability: [
       {
         startAt: {
