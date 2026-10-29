@@ -9,6 +9,7 @@ const Appointment = require("./models/Appointment");
 const authRoutes = require("./routes/authRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const appointmentRoutes = require("./routes/appointmentRoutes");
+const seedDoctors = require("./scripts/seedDoctors");
 
 const app = express();
 
@@ -49,6 +50,10 @@ async function startServer() {
       Doctor.init(),
       Appointment.init()
     ]);
+
+    if (process.env.SEED_DEMO_DATA === "true") {
+  await seedDoctors();
+}
 
     const port = process.env.PORT || 5000;
 
