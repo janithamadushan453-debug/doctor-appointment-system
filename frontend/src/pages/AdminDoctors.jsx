@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import { useAuth } from "../context/AuthContext";
-
+import { useAuth } from "../context/useAuth";
 const emptyForm = {
   name: "",
   specialization: "",
@@ -127,16 +126,20 @@ export default function AdminDoctors() {
   }
 
   async function deleteDoctor(doctor) {
-    if (!window.confirm(`Permanently delete ${doctor.name}?`)) {
-      return;
-    }
+  const confirmed = window.confirm(
+    `Deactivate ${doctor.name}? Existing appointments will be preserved.`
+  );
 
-    const deleted = await perform(() =>
-      api.delete(`/doctors/${doctor._id}`, config)
-    );
+  if (!confirmed) return;
 
-    if (deleted && editingId === doctor._id) resetForm();
+  const deactivated = await perform(() =>
+    api.delete(`/doctors/${doctor._id}`, config)
+  );
+
+  if (deactivated && editingId === doctor._id) {
+    resetForm();
   }
+}
 
   async function addSlot(event, doctorId) {
     event.preventDefault();
@@ -330,12 +333,12 @@ export default function AdminDoctors() {
                 </button>
 
                 <button
-                  className="danger"
-                  disabled={busy}
-                  onClick={() => deleteDoctor(doctor)}
-                >
-                  Delete
-                </button>
+  className="danger"
+  disabled={busy || !doctor.isActive}
+  onClick={() => deleteDoctor(doctor)}
+>
+  {doctor.isActive ? "Deactivate" : "Inactive"}
+</button>
               </div>
 
               {doctor.isActive && (

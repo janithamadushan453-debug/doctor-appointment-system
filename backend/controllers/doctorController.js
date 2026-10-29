@@ -286,7 +286,16 @@ exports.updateDoctor = async (req, res) => {
 
 exports.deleteDoctor = async (req, res) => {
   try {
-    const doctor = await Doctor.findById(req.params.id);
+    const doctor = await Doctor.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: { isActive: false }
+      },
+      {
+        new: true,
+        runValidators: true
+      }
+    );
 
     if (!doctor) {
       return res.status(404).json({
@@ -294,21 +303,10 @@ exports.deleteDoctor = async (req, res) => {
       });
     }
 
-    const hasAppointments = await Appointment.exists({
-      doctorId: doctor._id
-    });
-
-    if (hasAppointments) {
-      return res.status(409).json({
-        message:
-          "This doctor has appointments. Deactivate the doctor instead."
-      });
-    }
-
-    await Doctor.deleteOne({ _id: doctor._id });
-
     return res.json({
-      message: "Doctor deleted successfully"
+      message:
+        "Doctor deactivated. Existing appointment records have been preserved.",
+      doctor
     });
   } catch (error) {
     return handleError(error, res);
