@@ -51,7 +51,7 @@ The following commands use Windows PowerShell.
 ### 1. Clone the repository
 
 ```powershell
-git clone https://github.com/YOUR_USERNAME/doctor-appointment-system.git
+git clone https://github.com/janithamadushan453-debug/doctor-appointment-system.git
 cd doctor-appointment-system
 ```
 
