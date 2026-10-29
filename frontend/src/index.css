@@ -520,3 +520,369 @@ summary {
     max-width: 320px;
   }
 }
+
+/* Shared healthcare theme */
+:root {
+  --health-teal: #007f86;
+  --health-teal-dark: #00646a;
+  --health-navy: #10213b;
+  --health-muted: #53647c;
+  --health-border: #dce7eb;
+}
+
+body {
+  background: #f7fbfc;
+  color: var(--health-navy);
+}
+
+.navbar {
+  padding: 20px 5%;
+  border-bottom: 1px solid var(--health-border);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--health-navy);
+}
+
+.brand::before {
+  content: "+";
+  color: var(--health-teal);
+  font-size: 36px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.navbar nav a {
+  color: var(--health-muted);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.navbar nav a:hover {
+  color: var(--health-teal);
+}
+
+button,
+.button-link {
+  background: var(--health-teal);
+}
+
+button:hover,
+.button-link:hover {
+  background: var(--health-teal-dark);
+}
+
+/* Keep destructive actions red */
+button.danger {
+  background: #b91c1c;
+}
+
+button.danger:hover {
+  background: #991b1b;
+}
+
+.container {
+  max-width: 1380px;
+}
+
+/* Doctor discovery page */
+.discovery-page {
+  padding-bottom: 40px;
+}
+
+.discovery-hero {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  min-height: 390px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: linear-gradient(110deg, #eefafa, #e3f3f3);
+}
+
+.hero-copy {
+  padding: 50px 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-label {
+  color: var(--health-teal-dark);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+}
+
+.hero-copy h1 {
+  margin: 18px 0;
+  font-size: clamp(32px, 3.7vw, 52px);
+  line-height: 1.12;
+  letter-spacing: -1.6px;
+}
+
+.hero-copy h1 span {
+  display: block;
+  color: var(--health-teal);
+}
+
+.hero-copy p {
+  max-width: 480px;
+  margin-bottom: 26px;
+  color: var(--health-muted);
+  font-size: 17px;
+}
+
+.hero-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 25px;
+  padding: 14px 24px;
+}
+
+.hero-visual {
+  min-height: 390px;
+  background: #d7eeee;
+}
+
+.hero-visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* Search panel */
+.discovery-search {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  align-items: end;
+  gap: 24px;
+  margin: -20px 24px 40px;
+  padding: 25px;
+  border: 1px solid var(--health-border);
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 12px 30px rgb(0 100 106 / 8%);
+}
+
+.search-field {
+  min-width: 0;
+}
+
+.discovery-search label,
+.sort-control label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--health-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.discovery-search input,
+.discovery-search select,
+.sort-control select {
+  min-height: 46px;
+  margin: 0;
+  border-color: var(--health-border);
+  background: white;
+}
+
+.discovery-search button {
+  min-height: 46px;
+}
+
+/* Results */
+.specialists-section {
+  scroll-margin-top: 24px;
+}
+
+.specialists-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.specialists-heading h2 {
+  margin: 0 0 6px;
+  font-size: 30px;
+  letter-spacing: -0.8px;
+}
+
+.specialists-heading p {
+  margin: 0;
+  color: var(--health-muted);
+}
+
+.sort-control {
+  min-width: 190px;
+}
+
+.results-count {
+  margin: 22px 0 14px;
+  color: var(--health-muted);
+  font-size: 13px;
+}
+
+.discovery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.discovery-card {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--health-border);
+  border-radius: 16px;
+  background: white;
+  transition: box-shadow 180ms ease;
+}
+
+.discovery-card:hover {
+  box-shadow: 0 10px 28px rgb(16 33 59 / 8%);
+}
+
+.doctor-card-content {
+  display: grid;
+  grid-template-columns: 115px minmax(0, 1fr);
+  gap: 16px;
+}
+
+.discovery-card .doctor-photo {
+  width: 115px;
+  height: 185px;
+  margin: 0;
+  border-radius: 10px;
+}
+
+.discovery-card .photo-placeholder {
+  font-size: 34px;
+}
+
+.doctor-card-info {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.doctor-card-info h3 {
+  margin: 0 0 5px;
+  font-size: 17px;
+}
+
+.doctor-card-info p {
+  margin: 7px 0;
+  color: var(--health-muted);
+  font-size: 12px;
+}
+
+.doctor-card-info .specialty-text {
+  color: var(--health-teal);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.consultation-price {
+  margin-top: 13px;
+  padding-top: 10px;
+  border-top: 1px solid var(--health-border);
+}
+
+.consultation-price span {
+  display: block;
+  color: var(--health-muted);
+  font-size: 12px;
+}
+
+.consultation-price strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 20px;
+}
+
+.doctor-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.profile-link {
+  color: var(--health-teal);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.profile-link:hover {
+  text-decoration: underline;
+}
+
+.doctor-card-actions .button-link {
+  padding: 11px 14px;
+  font-size: 12px;
+}
+
+.discovery-state {
+  padding: 30px 0;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+  .discovery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+@media (max-width: 750px) {
+  .discovery-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy {
+    padding: 32px 24px;
+  }
+
+  .hero-visual {
+    min-height: 0;
+    height: 240px;
+  }
+
+  .hero-visual img {
+    height: 240px;
+  }
+
+  .discovery-search {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 18px 0 30px;
+    padding: 20px;
+  }
+
+  .discovery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .specialists-heading h2 {
+    font-size: 26px;
+  }
+
+  .sort-control {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .discovery-card {
+    transition: none;
+  }
+}

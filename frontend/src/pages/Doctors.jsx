@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import api from "../services/api";
 import { Link } from "react-router-dom";
+
+import api from "../services/api";
 import DoctorPhoto from "../components/DoctorPhoto";
 
 export default function Doctors() {
@@ -39,17 +40,14 @@ export default function Doctors() {
         if (!ignore) {
           setError(
             err.response?.data?.message ||
-            "Cannot load doctors. Check that the backend is running."
+              "Cannot load doctors. Please try again."
           );
         }
       } finally {
-        if (!ignore) {
-          setLoading(false);
-        }
+        if (!ignore) setLoading(false);
       }
     }
 
-    // Wait briefly before searching while the user types.
     const timer = setTimeout(loadDoctors, 300);
 
     return () => {
@@ -58,29 +56,56 @@ export default function Doctors() {
     };
   }, [search, specialization, sort, retryCount]);
 
-  function resetFilters() {
-    setSearch("");
-    setSpecialization("");
-    setSort("name");
-  }
-
   const currency = new Intl.NumberFormat("en-LK", {
     style: "currency",
-    currency: "LKR"
+    currency: "LKR",
+    maximumFractionDigits: 0
   });
 
   return (
-    <section>
-      <h1>Find a doctor</h1>
-      <p>Search doctors and compare consultation fees.</p>
+    <div className="discovery-page">
+      <section className="discovery-hero">
+        <div className="hero-copy">
+          <span className="hero-label">
+            YOUR NEXT APPOINTMENT STARTS HERE
+          </span>
 
-      <div className="doctor-filters">
-        <div>
-          <label htmlFor="doctor-search">Doctor name</label>
+          <h1>
+            Find the right doctor.
+            <span>Book with confidence.</span>
+          </h1>
+
+          <p>
+            Browse specialists and book your next
+            appointment in minutes.
+          </p>
+
+          <a className="button-link hero-button" href="#specialists">
+            Find a doctor <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div className="hero-visual">
+          <img
+            src="/images/doctor-hero.jpg"
+            alt="Doctor welcoming patients at a clinic"
+            onError={(event) => {
+              event.currentTarget.style.display = "none";
+            }}
+          />
+        </div>
+      </section>
+
+      <section className="discovery-search" aria-label="Find doctors">
+        <div className="search-field">
+          <label htmlFor="doctor-search">
+            Search by doctor name
+          </label>
+
           <input
             id="doctor-search"
             type="search"
-            placeholder="Search by name"
+            placeholder="e.g. Dr. Nimal Perera"
             value={search}
             maxLength={100}
             onChange={(event) => {
@@ -90,10 +115,11 @@ export default function Doctors() {
           />
         </div>
 
-        <div>
+        <div className="search-field">
           <label htmlFor="doctor-specialization">
             Specialization
           </label>
+
           <select
             id="doctor-specialization"
             value={specialization}
@@ -112,98 +138,140 @@ export default function Doctors() {
           </select>
         </div>
 
-        <div>
-          <label htmlFor="doctor-sort">Sort by</label>
-          <select
-            id="doctor-sort"
-            value={sort}
-            onChange={(event) => {
-              setSort(event.target.value);
-              setLoading(true);
-            }}
-          >
-            <option value="name">Name: A–Z</option>
-            <option value="feeAsc">Fee: low to high</option>
-            <option value="feeDesc">Fee: high to low</option>
-          </select>
-        </div>
-
-        <button type="button" onClick={resetFilters}>
-          Reset
-        </button>
-      </div>
-
-      {loading ? (
-        <p role="status">Loading doctors...</p>
-      ) : error ? (
-        <div>
-          <p className="error" role="alert">
-            {error}
-          </p>
-
-          <button
-            onClick={() => {
-              setLoading(true);
-              setRetryCount((count) => count + 1);
-            }}
-          >
-            Try again
-          </button>
-        </div>
-      ) : doctors.length === 0 ? (
-        <p>No doctors found. Try another search.</p>
-      ) : (
-        <>
-          <p>{doctors.length} doctor(s) found</p>
-
-          <div className="doctor-grid">
-            {doctors.map((doctor) => (
-              <article className="doctor-card" key={doctor._id}>
-                <span className="specialization">
-                  {doctor.specialization}
-                </span>
-
-                <DoctorPhoto
-                 src={doctor.photoUrl}
-                  name={doctor.name}
-                />
-
-                <h2>{doctor.name}</h2>
-
-                <p>
-                  {doctor.qualifications ||
-                    "Qualifications not provided"}
-                </p>
-
-                <p className="doctor-fee">
-                  {currency.format(doctor.consultationFee)}
-                </p>
-
-                <p>Consultation fee</p>
-        <Link
-           className="button-link"
-           to={`/doctors/${doctor._id}/book`}
+        <button
+          type="button"
+          onClick={() => {
+            setSearch("");
+            setSpecialization("");
+            setSort("name");
+          }}
         >
-           Book appointment
-        </Link>
+          Reset filters
+        </button>
+      </section>
 
-        <p>Experience: {doctor.experienceYears ?? 0} years</p>
-
-        <p>
-        Languages: {doctor.languages || "Not specified"}
-         </p>
-
-        <p>
-        <Link to={`/doctors/${doctor._id}`}>
-         View full profile
-        </Link>
-        </p>
-                
-              </article>
-            ))}
+      <section id="specialists" className="specialists-section">
+        <div className="specialists-heading">
+          <div>
+            <h2>Find your specialist</h2>
+            <p>
+              Compare doctor profiles and choose an appointment
+              that suits you.
+            </p>
           </div>
-        </>
-      )}
-    </section>
+
+          <div className="sort-control">
+            <label htmlFor="doctor-sort">Sort doctors</label>
+
+            <select
+              id="doctor-sort"
+              value={sort}
+              onChange={(event) => {
+                setSort(event.target.value);
+                setLoading(true);
+              }}
+            >
+              <option value="name">Name: A–Z</option>
+              <option value="feeAsc">Lowest fee first</option>
+              <option value="feeDesc">Highest fee first</option>
+            </select>
+          </div>
+        </div>
+
+        {loading ? (
+          <p className="discovery-state" role="status">
+            Loading doctors...
+          </p>
+        ) : error ? (
+          <div className="discovery-state">
+            <p className="error" role="alert">{error}</p>
+
+            <button
+              onClick={() => {
+                setLoading(true);
+                setRetryCount((count) => count + 1);
+              }}
+            >
+              Try again
+            </button>
+          </div>
+        ) : doctors.length === 0 ? (
+          <p className="discovery-state">
+            No doctors match your search. Try another name
+            or specialization.
+          </p>
+        ) : (
+          <>
+            <p className="results-count">
+              {doctors.length} doctor(s) found
+            </p>
+
+            <div className="discovery-grid">
+              {doctors.map((doctor) => (
+                <article
+                  className="discovery-card"
+                  key={doctor._id}
+                >
+                  <div className="doctor-card-content">
+                    <DoctorPhoto
+                      src={doctor.photoUrl}
+                      name={doctor.name}
+                    />
+
+                    <div className="doctor-card-info">
+                      <h3>{doctor.name}</h3>
+
+                      <p className="specialty-text">
+                        {doctor.specialization}
+                      </p>
+
+                      <p>
+                        {doctor.qualifications ||
+                          "Qualifications not provided"}
+                      </p>
+
+                      <p>
+                        {doctor.experienceYears ?? 0} years
+                        of experience
+                      </p>
+
+                      <p>
+                        {doctor.languages ||
+                          "Languages not specified"}
+                      </p>
+
+                      <div className="consultation-price">
+                        <span>Consultation fee</span>
+                        <strong>
+                          {currency.format(
+                            doctor.consultationFee
+                          )}
+                        </strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="doctor-card-actions">
+                    <Link
+                      className="profile-link"
+                      to={`/doctors/${doctor._id}`}
+                    >
+                      View profile →
+                    </Link>
+
+                    <Link
+                      className="button-link"
+                      to={`/doctors/${doctor._id}/book`}
+                    >
+                      Book appointment
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </>
+        )}
+      </section>
+    </div>
   );
 }
